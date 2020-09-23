@@ -28,7 +28,7 @@ for url in urls:
     productData = [get_product_data(i) for i in page.find_all('li', {'class': 'product'})]
     for product in productData:
         prevState = general.get_prev_state('scan', product['id'])
-        general.update_db(product)
+        general.update_db('scan', product)
         if prevState == None:
             continue
         elif prevState['price'] == product['price'] and prevState['availability'] == product['availability']:

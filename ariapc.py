@@ -13,7 +13,7 @@ def get_product_data(product):
     d = {}
     d['name'] = product.find_all('td')[1].find('a').contents[0]
     d['url'] = f"https://aria.co.uk{product.find('a')['href']}"
-    d['id'] = d['url'].strip('?productId=')[1].strip('&')[0]
+    d['id'] = d['url'].split('?productId=')[1].split('&')[0]
     page = make_soup(d['url'])
     page = page.find('table', {'class': 'fBox'})
     d['image'] = page.find('img')['src']
@@ -21,8 +21,8 @@ def get_product_data(product):
     if availability.parent.find('td', {'class': 'colRight'}).find('strong') is None:
         d['availability'] = 'In stock' if 'in stock' in availability.parent.find('img')['alt'].lower() else 'Out of stock'
     else:
-        d['availability'] = availability.parent.find('td', {'class': 'colRight'}).find('strong').contents[0].strip('!')[0]
-    d['price'] = product.find_all('td')[-2].find('span', {'class': 'price bold'}).contents[0].strip('£')[0]
+        d['availability'] = availability.parent.find('td', {'class': 'colRight'}).find('strong').contents[0].strip('!')
+    d['price'] = product.find_all('td')[-2].find('span', {'class': 'price bold'}).contents[0].strip('£')
     return d
 
 for url in urls:

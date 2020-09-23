@@ -1,48 +1,46 @@
 import requests
 import json
+import time
+import sqlite3
 
-with open('config.json', 'r') as f:
-    webhookUrl = json.load(f.read())['webhookUrl']
+# with open('config.json', 'r') as f:
+#     webhookUrl = json.load(f)['webhookUrl']
+
+webhookUrl = "https://discordapp.com/api/webhooks/749808620375375923/imyyN2R3xNUBU8W1n6ZkpqRCC-nmzwpxuGdO8sV6psKXxryfx93TQebedGN-ap6uWcYJ"
 
 def notify(product: dict, prevState: dict):
     message = compare(product, prevState)
-    embed = make_embed(product, message)
+    payload = make_message(product, message)
     requests.post(webhookUrl, payload)
 
-def make_embed(product: dict, message: str):
-    embed = {
-        "content": "A card is back in stock!",
-        "embeds": [
-            {
-                "author": {
-                    "name": product['name'],
-                    "url": product['url'],
-                    "icon_url": product['url']
-                },
-                "description": message,
-                "thumbnail": {
-                    "url": product['image']
-                }
-            }
-        ]
-    }
-    return embed
+def make_message(product: dict, msg: str):
+    message = {}
+    message['username'] = "RTX Bot"
+    message['avatar_url'] = "https://www.manli.com/upload/2020/05/26/s[1]_ch5itbcpjef651590480885.png"
+    message['embeds'] = []
+    embed = {}
+    embed['author'] = {"name": product['name'], "url": product['url']}
+    embed['description'] = msg
+    embed['thumbnail'] = {"url": product['image']}
+    message['embeds'].append(embed)
+    return message
 
 def get_prev_state(db: str, id: str):
     conn = sqlite3.connect('products.db')
     c = conn.cursor()
-    c.execute(f"SELECT id, price, availability FROM {db} WHERE id='{id}'")
-    r = c.fetchall()
-    if len([item for tup in r for item in tup]) > 0:
-        return [{'id': i[0], 'price': i[1], 'availability': i[2]} for i in r][0]
+    c.execute(f"SELECT id, price, availability FROM {db} WHERE id='{id}' ORDER BY time DESC;")
+    r = c.fetchone()
+    c.close()
+    if len(r) > 0:
+        return {'id': r[0], 'price': r[1], 'availability': r[2]}
     else:
         return None
 
 def compare(new: dict, old: dict):
     m = []
-    if new['price'] > old['price']:
+    if float(new['price']) > old['price']:
         m.append(f"Price has gone up! Was {old['price']}, now {new['price']}")
-    elif new['price'] < old['price']:
+    elif float(new['price']) < old['price']:
         m.append(f"Price has gone down! Was {old['price']}, now {new['price']}")
     else:
         pass
@@ -54,5 +52,19 @@ def compare(new: dict, old: dict):
         m.append('Now available for preorder!')
     elif new['availability'] == 'Out of stock':
         m.append('Out of stock :(')
-    message = '\n'e.join(m) if len(m) > 0 else None
+    message = '\n'.join(m) if len(m) > 0 else None
     return message
+
+def update_db(db: str, product: dict):
+    conn = sqlite3.connect('products.db')
+    c = conn.cursor()
+    try:
+        values = [product[i] for i in ['id', 'price', 'availability']]
+    except Exception as e:
+        print(e)
+        print(product)
+    values.append(int(time.time()))
+    values = str(tuple(values))
+    c.execute(f"INSERT INTO {db} (id, price, availability, time) VALUES {values}")
+    conn.commit()
+    conn.close()
