@@ -3,10 +3,8 @@ import json
 import time
 import sqlite3
 
-# with open('config.json', 'r') as f:
-#     webhookUrl = json.load(f)['webhookUrl']
-
-webhookUrl = "https://discordapp.com/api/webhooks/749808620375375923/imyyN2R3xNUBU8W1n6ZkpqRCC-nmzwpxuGdO8sV6psKXxryfx93TQebedGN-ap6uWcYJ"
+with open('config.json', 'r') as f:
+    webhookUrl = json.load(f)['webhookUrl']
 
 def notify(product: dict, prevState: dict):
     message = compare(product, prevState)
