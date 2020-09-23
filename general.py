@@ -29,10 +29,11 @@ def get_prev_state(db: str, id: str):
     c.execute(f"SELECT id, price, availability FROM {db} WHERE id='{id}' ORDER BY time DESC;")
     r = c.fetchone()
     c.close()
-    if len(r) > 0:
-        return {'id': r[0], 'price': r[1], 'availability': r[2]}
-    else:
+    type(r)
+    if r == None or len(r) == 0:
         return None
+    elif len(r) > 0:
+        return {'id': r[0], 'price': r[1], 'availability': r[2]}
 
 def compare(new: dict, old: dict):
     m = []
