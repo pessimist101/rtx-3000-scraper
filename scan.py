@@ -1,7 +1,6 @@
 import requests, bs4
 from bs4 import BeautifulSoup as soup
 import general
-import json
 
 headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'}
 availabilityTranslations = {'http://schema.org/OutOfStock': 'Out of stock', 'http://schema.org/PreOrder': 'Preorder', 'http://schema.org/InStock': 'In stock'}
