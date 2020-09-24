@@ -29,8 +29,8 @@ for url in urls:
     productList = [i for i in productList if isinstance(i, bs4.element.Tag) and i.attrs['class'] == ['col-xs-12'] and 'id' not in i.attrs]
     productData = [get_product_data(i) for i in productList]
     for product in productData:
-        prevState = general.get_prev_state('scan', product['id'])
-        general.update_db('scan', product)
+        prevState = general.get_prev_state('novatech', product['id'])
+        general.update_db('novatech', product)
         if prevState == None:
             continue
         elif prevState['price'] == product['price'] and prevState['availability'] == product['availability']:
