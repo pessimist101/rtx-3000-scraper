@@ -34,13 +34,12 @@ for url in urls:
     page = make_soup(url)
     productList = page.find('div', {'class': 'ck_listing article-listing clear'})
     productData.extend([get_product_data(i) for i in productList.find_all('article')])
-
-for product in productData:
-    prevState = general.get_prev_state('overclockers', product['id'])
-    general.update_db('overclockers', product)
-    if prevState == None:
-        continue
-    elif prevState['price'] == product['price'] and prevState['availability'] == product['availability']:
-        continue
-    else:
-        general.notify(product, prevState)
+    for product in productData:
+        prevState = general.get_prev_state('overclockers', product['id'])
+        general.update_db('overclockers', product)
+        if prevState == None:
+            continue
+        elif prevState['price'] == product['price'] and prevState['availability'] == product['availability']:
+            continue
+        else:
+            general.notify(product, prevState)
