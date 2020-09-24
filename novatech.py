@@ -1,5 +1,6 @@
 import requests, bs4
 from bs4 import BeautifulSoup as soup
+import general
 
 headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'}
 availabilityTranslations = {'Very short supply, no confirmed date': 'Out of stock', 'In stock': 'In stock', 'Stock Due Today': 'Preorder', 'Ordered Upon Request': 'Preorder'}
