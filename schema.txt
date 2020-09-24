@@ -37,3 +37,11 @@ CREATE TABLE novatech (
     availability TEXT NOT NULL,
     time INTEGER NOT NULL
 );
+
+CREATE TABLE ebuyer (
+    row_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id TEXT NOT NULL,
+    price INTEGER NOT NULL,
+    availability TEXT NOT NULL,
+    time INTEGER NOT NULL
+);
