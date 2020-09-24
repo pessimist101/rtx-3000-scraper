@@ -23,16 +23,18 @@ def get_product_data(product):
     d['price'] = product.find('span', {'class': 'ty-price-num'}).contents[0]
     return d
 
-for url in urls:
-    page = make_soup(url)
-    productList = page.find('div', {'class': 'grid-list vs-grid-table-wrapper'}).find_all('div', {'class': 'ty-column4'})
-    productData = [get_product_data(i) for i in products]
-    for product in productData:
-        prevState = general.get_prev_state('ariapc', product['id'])
-        general.update_db('ariapc', product)
-        if prevState == None:
-            continue
-        elif prevState['price'] == product['price'] and prevState['availability'] == product['availability']:
-            continue
-        else:
-            general.notify(product, prevState)
+while True:
+    for url in urls:
+        page = make_soup(url)
+        productList = page.find('div', {'class': 'grid-list vs-grid-table-wrapper'}).find_all('div', {'class': 'ty-column4'})
+        productData = [get_product_data(i) for i in products]
+        for product in productData:
+            prevState = general.get_prev_state('ariapc', product['id'])
+            general.update_db('ariapc', product)
+            if prevState == None:
+                continue
+            elif prevState['price'] == product['price'] and prevState['availability'] == product['availability']:
+                continue
+            else:
+                general.notify(product, prevState)
+    time.sleep(general.waitInterval)

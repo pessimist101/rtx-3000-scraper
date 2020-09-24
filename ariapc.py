@@ -1,6 +1,7 @@
 import requests, bs4
 from bs4 import BeautifulSoup as soup
 import general
+import time
 
 headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'}
 urls = ['https://www.aria.co.uk/Products?search=3080&x=0&y=0']
@@ -25,17 +26,19 @@ def get_product_data(product):
     d['price'] = product.find_all('td')[-2].find('span', {'class': 'price bold'}).contents[0].strip('£')
     return d
 
-for url in urls:
-    page = make_soup(url)
-    productTable = page.find('table', {'class':'listTable'})
-    products = productTable.find_all('tr', {'class': 'listTableTr'})
-    productData = [get_product_data(i) for i in products]
-    for product in productData:
-        prevState = general.get_prev_state('ariapc', product['id'])
-        general.update_db('ariapc', product)
-        if prevState == None:
-            continue
-        elif prevState['price'] == product['price'] and prevState['availability'] == product['availability']:
-            continue
-        else:
-            general.notify(product, prevState)
+while True:
+    for url in urls:
+        page = make_soup(url)
+        productTable = page.find('table', {'class':'listTable'})
+        products = productTable.find_all('tr', {'class': 'listTableTr'})
+        productData = [get_product_data(i) for i in products]
+        for product in productData:
+            prevState = general.get_prev_state('ariapc', product['id'])
+            general.update_db('ariapc', product)
+            if prevState == None:
+                continue
+            elif prevState['price'] == product['price'] and prevState['availability'] == product['availability']:
+                continue
+            else:
+                general.notify(product, prevState)
+    time.sleep(general.waitInterval)

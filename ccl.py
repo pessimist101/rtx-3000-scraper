@@ -1,6 +1,7 @@
 import requests, bs4
 from bs4 import BeautifulSoup as soup
 import general
+import time
 
 # We're using iPhone headers this time bois
 headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'}
@@ -24,15 +25,17 @@ def get_product_data(product):
     d['price'] = product.find('span', {'class': 'price-text-medium'}).contents[0].strip('£')
     return d
 
-for url in urls:
-    page = make_soup(url)
-    productData = [get_product_data(i) for i in page.find('div', {'class': 'product-listing-container'}).find_all('div', {'class': 'product-listing'})]
-    for product in productData:
-        prevState = general.get_prev_state('ccl', product['id'])
-        general.update_db('ccl', product)
-        if prevState == None:
-            continue
-        elif prevState['price'] == product['price'] and prevState['availability'] == product['availability']:
-            continue
-        else:
-            general.notify(product, prevState)
+while True:
+    for url in urls:
+        page = make_soup(url)
+        productData = [get_product_data(i) for i in page.find('div', {'class': 'product-listing-container'}).find_all('div', {'class': 'product-listing'})]
+        for product in productData:
+            prevState = general.get_prev_state('ccl', product['id'])
+            general.update_db('ccl', product)
+            if prevState == None:
+                continue
+            elif prevState['price'] == product['price'] and prevState['availability'] == product['availability']:
+                continue
+            else:
+                general.notify(product, prevState)
+    time.sleep(general.waitInterval)

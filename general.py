@@ -4,7 +4,9 @@ import time
 import sqlite3
 
 with open('config.json', 'r') as f:
-    webhookUrl = json.load(f)['webhookUrl']
+    config = json.load(f)
+webhookUrl = config['webhookUrl']
+waitInterval = config['waitInterval']
 
 def notify(product: dict, prevState: dict):
     message = compare(product, prevState)

@@ -1,3 +1,4 @@
 {
-    "webhookUrl": "WEBHOOK URL HERE"
+    "webhookUrl": "webhook URL here",
+    "waitInterval": 150
 }
