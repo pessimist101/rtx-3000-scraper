@@ -29,11 +29,10 @@ def get_product_data(product):
     d['price'] = product.find('span', {'class': 'price'}).contents[0].strip().strip('£')
     return d
 
-productData = []
 for url in urls:
     page = make_soup(url)
     productList = page.find('div', {'class': 'ck_listing article-listing clear'})
-    productData.extend([get_product_data(i) for i in productList.find_all('article')])
+    productData = [get_product_data(i) for i in productList.find_all('article')]
     for product in productData:
         prevState = general.get_prev_state('overclockers', product['id'])
         general.update_db('overclockers', product)
