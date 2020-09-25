@@ -9,6 +9,7 @@ webhookUrl = config['webhookUrl']
 waitInterval = config['waitInterval']
 
 def notify(product: dict, prevState: dict):
+    return
     message = compare(product, prevState)
     payload = make_message(product, message)
     requests.post(webhookUrl, payload)
@@ -25,10 +26,10 @@ def make_message(product: dict, msg: str):
     message['embeds'].append(embed)
     return message
 
-def get_prev_state(db: str, id: str):
+def get_prev_state(retailer: str, id: str):
     conn = sqlite3.connect('products.db')
     c = conn.cursor()
-    c.execute(f"SELECT id, price, availability FROM {db} WHERE id='{id}' ORDER BY time DESC;")
+    c.execute(f"SELECT retailer, id, price, image, url, availability, time FROM products WHERE id='{id}' ORDER BY time DESC;")
     r = c.fetchone()
     c.close()
     type(r)
@@ -56,16 +57,13 @@ def compare(new: dict, old: dict):
     message = '\n'.join(m) if len(m) > 0 else None
     return message
 
-def update_db(db: str, product: dict):
+def update_db(retailer: str, product: dict):
     conn = sqlite3.connect('products.db')
     c = conn.cursor()
-    try:
-        values = [product[i] for i in ['id', 'price', 'availability']]
-    except Exception as e:
-        print(e)
-        print(product)
+    values = [retailer]
+    values.extend([product[i] for i in ['id', 'price', 'image', 'url', 'availability']])
     values.append(int(time.time()))
     values = str(tuple(values))
-    c.execute(f"INSERT INTO {db} (id, price, availability, time) VALUES {values}")
+    c.execute(f"INSERT INTO products (retailer, id, price, image, url, availability, time) VALUES {values}")
     conn.commit()
     conn.close()
