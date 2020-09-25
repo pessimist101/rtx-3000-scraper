@@ -1,5 +1,48 @@
 version: '3'
 
 services:
-    ebuyer:
-        build: .
+  ariapc:
+    build:
+      context: ./
+      dockerfile: ariapc-dockerfile
+    restart: unless-stopped
+  awd-it:
+    build:
+      context: ./
+      dockerfile: awd-it-dockerfile
+    restart: unless-stopped
+  box:
+    build:
+      context: ./
+      dockerfile: box-dockerfile
+    restart: unless-stopped
+  ccl:
+    build:
+      context: ./
+      dockerfile: ccl-dockerfile
+    restart: unless-stopped
+  currys:
+    build:
+      context: ./
+      dockerfile: currys-dockerfile
+    restart: unless-stopped
+  ebuyer:
+    build:
+      context: ./
+      dockerfile: ebuyer-dockerfile
+    restart: unless-stopped
+  novatech:
+    build:
+      context: ./
+      dockerfile: novatech-dockerfile
+    restart: unless-stopped
+  overclockers:
+    build:
+      context: ./
+      dockerfile: overclockers-dockerfile
+    restart: unless-stopped
+  scan:
+    build:
+      context: ./
+      dockerfile: scan-dockerfile
+    restart: unless-stopped
