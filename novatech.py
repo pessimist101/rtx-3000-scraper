@@ -12,18 +12,22 @@ def make_soup(url):
     return soup(r.text, 'html.parser')
 
 def get_product_data(product):
-    d = {}
-    d['name'] = product.find('img')['title'].strip()
-    d['id'] = product.find('p', {'class': 'stockcodes'}).contents[0].split('Stock Code: ')[1]
-    img = product.find('img')
-    d['image'] = img['data-src'] if 'src' not in img.attrs else img['src']
-    d['url'] = f"https://www.novatech.co.uk{product.find('a')['href']}"
-    d['price'] = product.find('p', {'class': 'newspec-price-listing'}).contents[0].strip('£')
-    availability = product.find('span', {'class': 'newspec-stock-status'}).contents[0].strip()
-    if availability.lower().strip().endswith('in stock'):
-        availability = 'In stock'
-    d['availability'] = availabilityTranslations[availability]
-    return d
+    try:
+        d = {}
+        d['name'] = product.find('img')['title'].strip()
+        d['id'] = product.find('p', {'class': 'stockcodes'}).contents[0].split('Stock Code: ')[1]
+        img = product.find('img')
+        d['image'] = img['data-src'] if 'src' not in img.attrs else img['src']
+        d['url'] = f"https://www.novatech.co.uk{product.find('a')['href']}"
+        d['price'] = product.find('p', {'class': 'newspec-price-listing'}).contents[0].strip('£')
+        availability = product.find('span', {'class': 'newspec-stock-status'}).contents[0].strip()
+        if availability.lower().strip().endswith('in stock'):
+            availability = 'In stock'
+        d['availability'] = availabilityTranslations[availability]
+        return d
+    except:
+        time.sleep(150)
+        return get_product_data(product)
 
 while True:
     for url in urls:
