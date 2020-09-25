@@ -31,8 +31,8 @@ while True:
         productList = page.find('div', {'class': 'grid-list vs-grid-table-wrapper'}).find_all('div', {'class': 'ty-column4'})
         productData = [get_product_data(i) for i in productList if i.find('img') is not None]
         for product in productData:
-            prevState = general.get_prev_state('ariapc', product['id'])
-            general.update_db('ariapc', product)
+            prevState = general.get_prev_state('awd-it', product['id'])
+            general.update_db('awd-it', product)
             if prevState == None:
                 continue
             elif prevState['price'] == product['price'] and prevState['availability'] == product['availability']:
