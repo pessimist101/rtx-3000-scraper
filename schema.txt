@@ -1,55 +1,9 @@
-CREATE TABLE scan (
+CREATE TABLE products (
     row_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    retailer TEXT NOT NULL,
     id TEXT NOT NULL,
-    price INTEGER NOT NULL,
+    price FLOAT NOT NULL,
+    image TEXT NOT NULL,
+    url TEXT NOT NULL,
     availability TEXT NOT NULL,
-    time INTEGER NOT NULL
-);
-
-CREATE TABLE ccl (
-    row_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id TEXT NOT NULL,
-    price INTEGER NOT NULL,
-    availability TEXT NOT NULL,
-    time INTEGER NOT NULL
-);
-
-CREATE TABLE overclockers (
-    row_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id TEXT NOT NULL,
-    price INTEGER NOT NULL,
-    availability TEXT NOT NULL,
-    time INTEGER NOT NULL
-);
-
-CREATE TABLE box (
-    row_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id TEXT NOT NULL,
-    price INTEGER NOT NULL,
-    availability TEXT NOT NULL,
-    time INTEGER NOT NULL
-);
-
-CREATE TABLE novatech (
-    row_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id TEXT NOT NULL,
-    price INTEGER NOT NULL,
-    availability TEXT NOT NULL,
-    time INTEGER NOT NULL
-);
-
-CREATE TABLE ebuyer (
-    row_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id TEXT NOT NULL,
-    price INTEGER NOT NULL,
-    availability TEXT NOT NULL,
-    time INTEGER NOT NULL
-);
-
-CREATE TABLE currys (
-    row_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id TEXT NOT NULL,
-    price INTEGER NOT NULL,
-    availability TEXT NOT NULL,
-    time INTEGER NOT NULL
-);
+    time INTEGER NOT NULL);
