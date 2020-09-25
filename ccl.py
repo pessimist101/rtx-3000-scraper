@@ -15,7 +15,7 @@ def get_product_data(product):
     d = {}
     d['name'] = product.find('img')['alt']
     d['url'] = f"https://cclonline.com{product.find('a', {'class': 'producturl'})['href']}"
-    d['id'] = make_soup(d['url']).find('span', {'itemprop': 'sku'}).contents[0]
+    d['id'] = d['url'].split('/')[-2]
     d['image'] = f"https://m.cclonline.com/{product.find('img')['src']}"
     availability = product.find('div', {'class': 'ProductListingStockInfo'})
     if 'green' in ''.join([''.join(i['class']) for i in availability.find_all(True)]):
