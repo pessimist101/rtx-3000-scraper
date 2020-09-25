@@ -1,0 +1,8 @@
+FROM python:3
+ADD overclockers.py /
+ADD requirements.txt /
+ADD config.json /
+ADD general.py /
+ADD products.db /
+RUN pip install -r requirements.txt
+CMD [ "python", "./overclockers.py" ]
