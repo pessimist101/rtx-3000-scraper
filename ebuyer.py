@@ -12,20 +12,24 @@ def make_soup(url):
     return soup(r.text, 'html.parser')
 
 def get_product_data(product):
-    d = {}
-    d['name'] = product.find('img')['alt']
-    d['id'] = product['data-product-id']
-    d['image'] = product.find('img')['src']
-    d['url'] = f"https://www.ebuyer.com{product.find('a')['href']}"
-    if product.find('p', {'class':'price'}):
-        d['price'] = product.find('p', {'class':'price'}).contents[2].strip()
-    elif product.find('div', {'class': 'grid-item__price'}).contents[0].strip() == '':
-        d['price'] = '0.00'
-    if product.find('button', {'class': 'button--mini-basket'}): # In stock or Preorder
-        d['availability'] = availabilityTranslations[product.find('button', {'class': 'button--mini-basket'}).contents[0]]
-    else:
-        d['availability'] = 'Out of stock'
-    return d
+    try:
+        d = {}
+        d['name'] = product.find('img')['alt']
+        d['id'] = product['data-product-id']
+        d['image'] = product.find('img')['src']
+        d['url'] = f"https://www.ebuyer.com{product.find('a')['href']}"
+        if product.find('p', {'class':'price'}):
+            d['price'] = product.find('p', {'class':'price'}).contents[2].strip()
+        elif product.find('div', {'class': 'grid-item__price'}).contents[0].strip() == '':
+            d['price'] = '0.00'
+        if product.find('button', {'class': 'button--mini-basket'}): # In stock or Preorder
+            d['availability'] = availabilityTranslations[product.find('button', {'class': 'button--mini-basket'}).contents[0]]
+        else:
+            d['availability'] = 'Out of stock'
+        return d
+    except:
+        time.sleep(150)
+        return get_product_data(product)
 
 while True:
     for url in urls:

@@ -5,25 +5,29 @@ import time
 
 # We're using iPhone headers this time bois
 headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'}
-urls = ['https://m.cclonline.com/category/430/PC-Components/Graphics-Cards/GeForce-RTX-3080-Graphics-Cards/']
+urls = ['https://m.cclonline.com/category/430/PC-Components/Graphics-Cards/GeForce-RTX-3080-Graphics-Cards/','https://m.cclonline.com/category/430/PC-Components/Graphics-Cards/GeForce-RTX-3090-Graphics-Cards/']
 
 def make_soup(url):
     r = requests.get(url, headers=headers)
     return soup(r.text, 'html.parser')
 
 def get_product_data(product):
-    d = {}
-    d['name'] = product.find('img')['alt']
-    d['url'] = f"https://cclonline.com{product.find('a', {'class': 'producturl'})['href']}"
-    d['id'] = d['url'].split('/')[-2]
-    d['image'] = f"https://m.cclonline.com/{product.find('img')['src']}"
-    availability = product.find('div', {'class': 'ProductListingStockInfo'})
-    if 'green' in ''.join([''.join(i['class']) for i in availability.find_all(True)]):
-        d['availability'] = 'In stock'
-    elif 'blue' in ''.join([''.join(i['class']) for i in availability.find_all(True)]):
-        d['availability'] = 'Out of stock'
-    d['price'] = product.find('span', {'class': 'price-text-medium'}).contents[0].strip('£')
-    return d
+    try:
+        d = {}
+        d['name'] = product.find('img')['alt']
+        d['url'] = f"https://cclonline.com{product.find('a', {'class': 'producturl'})['href']}"
+        d['id'] = d['url'].split('/')[-2]
+        d['image'] = f"https://m.cclonline.com/{product.find('img')['src']}"
+        availability = product.find('div', {'class': 'ProductListingStockInfo'})
+        if 'green' in ''.join([''.join(i['class']) for i in availability.find_all(True)]):
+            d['availability'] = 'In stock'
+        elif 'blue' in ''.join([''.join(i['class']) for i in availability.find_all(True)]):
+            d['availability'] = 'Out of stock'
+        d['price'] = product.find('span', {'class': 'price-text-medium'}).contents[0].strip('£')
+        return d
+    except:
+        time.sleep(150)
+        return get_product_data(product)
 
 while True:
     for url in urls:

@@ -6,7 +6,7 @@ import time
 
 # We're using iPhone headers this time bois
 headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'}
-urls = ['https://www.overclockers.co.uk/pc-components/graphics-cards/nvidia/geforce-rtx-3080', 'https://www.overclockers.co.uk/pc-components/graphics-cards/nvidia/geforce-rtx-3080?p=2']
+urls = ['https://www.overclockers.co.uk/pc-components/graphics-cards/nvidia/geforce-rtx-3080', 'https://www.overclockers.co.uk/pc-components/graphics-cards/nvidia/geforce-rtx-3080?p=2','https://www.overclockers.co.uk/pc-components/graphics-cards/nvidia/geforce-rtx-3090']
 
 def make_soup(url):
     r = requests.get(url, headers=headers)

@@ -12,18 +12,22 @@ def make_soup(url):
     return soup(r.text, 'html.parser')
 
 def get_product_data(product):
-    d = {}
-    brand = product.find('span', {'data-product': 'brand'}).contents[0]
-    d['name'] = f"{brand} {product.find('span', {'data-product': 'name'}).contents[0]}"
-    d['id'] = product['id'].strip('product')
-    d['image'] = product.find('picture')['data-iesrc']
-    d['url'] = product.find('a')['href']
-    d['price'] = product.find('strong', {'class': 'price', 'data-product': 'price'}).contents[0].strip().strip('£')
     try:
-        d['availability'] = availabilityTranslations[product.find('ul', {'data-product': 'availability'}).find('li')['data-availability']]
-    except KeyError:
-        d['availability'] = availabilityTranslations[product.find('ul', {'data-product': 'availability'}).find('li')['class'][0]]
-    return d
+        d = {}
+        brand = product.find('span', {'data-product': 'brand'}).contents[0]
+        d['name'] = f"{brand} {product.find('span', {'data-product': 'name'}).contents[0]}"
+        d['id'] = product['id'].strip('product')
+        d['image'] = product.find('picture')['data-iesrc']
+        d['url'] = product.find('a')['href']
+        d['price'] = product.find('strong', {'class': 'price', 'data-product': 'price'}).contents[0].strip().strip('£')
+        try:
+            d['availability'] = availabilityTranslations[product.find('ul', {'data-product': 'availability'}).find('li')['data-availability']]
+        except KeyError:
+            d['availability'] = availabilityTranslations[product.find('ul', {'data-product': 'availability'}).find('li')['class'][0]]
+        return d
+    except:
+        time.sleep(150)
+        return get_product_data(product)
 
 while True:
     for url in urls:
