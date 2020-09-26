@@ -58,12 +58,12 @@ def compare(new: dict, old: dict):
     return message
 
 def update_db(retailer: str, product: dict):
-    conn = sqlite3.connect('products.db')
+    conn = sqlite3.connect('/db/products.db')
     c = conn.cursor()
     values = [retailer]
-    values.extend([product[i] for i in ['id', 'price', 'image', 'url', 'availability']])
+    values.extend([product[i] for i in ['name', 'id', 'price', 'image', 'url', 'availability']])
     values.append(int(time.time()))
     values = str(tuple(values))
-    c.execute(f"INSERT INTO products (retailer, id, price, image, url, availability, time) VALUES {values}")
+    c.execute(f"INSERT INTO products (name, retailer, id, price, image, url, availability, time) VALUES {values}")
     conn.commit()
     conn.close()

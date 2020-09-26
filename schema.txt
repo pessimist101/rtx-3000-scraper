@@ -1,5 +1,6 @@
 CREATE TABLE products (
     row_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
     retailer TEXT NOT NULL,
     id TEXT NOT NULL,
     price FLOAT NOT NULL,

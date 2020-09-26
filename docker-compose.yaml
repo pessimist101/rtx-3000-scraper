@@ -1,48 +1,81 @@
-version: '3'
-
-services:
   ariapc:
     build:
       context: ./
       dockerfile: ariapc-dockerfile
+    volumes:
+      - type: volume
+        source: nvidia-db
+        target: /db
     restart: unless-stopped
   awd-it:
     build:
       context: ./
       dockerfile: awd-it-dockerfile
+    volumes:
+      - type: volume
+        source: nvidia-db
+        target: /db
     restart: unless-stopped
   box:
     build:
       context: ./
       dockerfile: box-dockerfile
+    volumes:
+      - type: volume
+        source: nvidia-db
+        target: /db
     restart: unless-stopped
   ccl:
     build:
       context: ./
       dockerfile: ccl-dockerfile
+    volumes:
+      - type: volume
+        source: nvidia-db
+        target: /db
     restart: unless-stopped
   currys:
     build:
       context: ./
       dockerfile: currys-dockerfile
+    volumes:
+      - type: volume
+        source: nvidia-db
+        target: /db
     restart: unless-stopped
   ebuyer:
     build:
       context: ./
       dockerfile: ebuyer-dockerfile
+    volumes:
+      - type: volume
+        source: nvidia-db
+        target: /db
     restart: unless-stopped
   novatech:
     build:
       context: ./
       dockerfile: novatech-dockerfile
+    volumes:
+      - type: volume
+        source: nvidia-db
+        target: /db
     restart: unless-stopped
   overclockers:
     build:
       context: ./
       dockerfile: overclockers-dockerfile
+    volumes:
+      - type: volume
+        source: nvidia-db
+        target: /db
     restart: unless-stopped
   scan:
     build:
       context: ./
       dockerfile: scan-dockerfile
+    volumes:
+      - type: volume
+        source: nvidia-db
+        target: /db
     restart: unless-stopped
