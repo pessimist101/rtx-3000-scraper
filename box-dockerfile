@@ -3,6 +3,5 @@ ADD box.py /
 ADD requirements.txt /
 ADD config.json /
 ADD general.py /
-ADD products.db /
 RUN pip install -r requirements.txt
 CMD [ "python", "./box.py" ]
