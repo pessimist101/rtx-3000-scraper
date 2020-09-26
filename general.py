@@ -27,7 +27,7 @@ def make_message(product: dict, msg: str):
     return message
 
 def get_prev_state(retailer: str, id: str):
-    conn = sqlite3.connect('products.db')
+    conn = sqlite3.connect('./db/products.db')
     c = conn.cursor()
     c.execute(f"SELECT retailer, id, price, image, url, availability, time FROM products WHERE id='{id}' ORDER BY time DESC;")
     r = c.fetchone()
@@ -58,7 +58,7 @@ def compare(new: dict, old: dict):
     return message
 
 def update_db(retailer: str, product: dict):
-    conn = sqlite3.connect('/db/products.db')
+    conn = sqlite3.connect('./db/products.db')
     c = conn.cursor()
     values = [retailer]
     values.extend([product[i] for i in ['name', 'id', 'price', 'image', 'url', 'availability']])
