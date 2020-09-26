@@ -79,3 +79,5 @@
         source: nvidia-db
         target: /db
     restart: unless-stopped
+volumes:
+  nvidia-db:
