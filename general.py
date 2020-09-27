@@ -61,7 +61,7 @@ def update_db(retailer: str, product: dict):
     conn = sqlite3.connect('/db/products.db')
     c = conn.cursor()
     product['retailer'] = retailer
-    values.extend([product[i] for i in ['name', 'retailer', 'id', 'price', 'image', 'url', 'availability']])
+    values = [product[i] for i in ['name', 'retailer', 'id', 'price', 'image', 'url', 'availability']]
     values.append(int(time.time()))
     values = str(tuple(values))
     c.execute(f"INSERT INTO products (name, retailer, id, price, image, url, availability, time) VALUES {values}")
